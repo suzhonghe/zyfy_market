@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='com.zhongyang.java.dao.ModifyBankCardDao'>
+	<select id="selectByParams" parameterType="com.zhongyang.java.pojo.ModifyBankCard"
+		resultType="com.zhongyang.java.pojo.ModifyBankCard">
+		select ID id,ORDERID orderId,USERID userId,FUNDACCOUNTID fundAccountId,STATUS status,BANK bank,ACCOUNT account,TYPE type,CREATEDATE createDate from TB_MODIFYBANKCARD where 1 = 1
+		<if test="id != null">
+			and ID = #{id}
+		</if>
+		<if test="orderId != null">
+			and ORDERID = #{orderId}
+		</if>
+		<if test="type != null">
+			and TYPE = #{type}
+		</if>
+		<if test="status != null">
+			and STATUS = #{status}
+		</if>
+		<if test="userId != null">
+			and USERID = #{userId}
+		</if>
+	</select>
+	
+	<insert id="insertModifyBankCard" parameterType="com.zhongyang.java.pojo.ModifyBankCard">
+		INSERT INTO
+		TB_MODIFYBANKCARD (ID,ORDERID,USERID,FUNDACCOUNTID,STATUS,BANK,ACCOUNT,TYPE,CREATEDATE) VALUES 
+		(#{id},#{orderId},#{userId}, #{fundAccountId},#{status},#{bank},#{account},#{type},#{createDate})
+	</insert>
+
+	<update id="updateModifyBankCard" parameterType="com.zhongyang.java.pojo.ModifyBankCard">
+		update TB_MODIFYBANKCARD 
+			<set>
+				<if test="status!=null">
+					STATUS=#{status},
+				</if>
+			</set>
+		where ID=#{id}
+	</update>
+</mapper>

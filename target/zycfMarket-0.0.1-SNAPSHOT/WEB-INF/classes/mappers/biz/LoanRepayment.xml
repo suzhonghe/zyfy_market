@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+
+<mapper namespace='com.zhongyang.java.dao.LoanRepaymentDao'>
+	
+	<!-- 根据OrderId查询userID -->
+	<select id="getLoanRepayment" parameterType="com.zhongyang.java.vo.loan.LoanRepaymentVo" resultType="com.zhongyang.java.vo.loan.LoanRepaymentVo">
+		SELECT
+		  tr.CURRENTPERIOD currentperiod,
+		  tr.STATUS status,
+		  tr.DUEDATE duedate,
+		  tr.AMOUNTINTEREST amountinterest,
+		  tr.AMOUNTOUTSTANDING amountoutstanding,
+		  tr.AMOUNTPRINCIPAL amountprincipal,
+		  tl.TITLE title
+		  FROM TB_LOAN_REPAYMENT tr,TB_LOAN tl 
+		  WHERE tr.STATUS IN('UNDUE','REPAYED','PREPAY','OVERDUE')  
+		  AND tl.id = tr.LOAN_ID
+		  AND tl.LOANUSERID = #{loanUserId}
+		  <if test="startTime!=null">
+			and  tr.DUEDATE &gt;=#{startTime}
+		</if>
+		<if test="endTime!=null">
+			and  tr.DUEDATE &lt;=#{endTime}
+		</if>
+		order by tr.DUEDATE ASC
+	</select>
+	
+	<!-- 根据OrderId查询userID -->
+	<select id="getLoanRepaymentAndStatusVo" parameterType="com.zhongyang.java.vo.loan.LoanRepaymentVo" resultType="com.zhongyang.java.vo.loan.LoanRepaymentVo">
+		SELECT
+		  tr.CURRENTPERIOD currentperiod,
+		  tr.STATUS status,
+		  tr.AMOUNTINTEREST amountinterest,
+		  tr.AMOUNTOUTSTANDING amountoutstanding,
+		  tr.AMOUNTPRINCIPAL amountprincipal,
+		  tr.DUEDATE duedate,
+		  tl.TITLE title
+		  FROM TB_LOAN_REPAYMENT tr,TB_LOAN tl 
+		  WHERE tl.id = tr.LOAN_ID
+		  AND tl.LOANUSERID = #{loanUserId}
+		<if test="status != null">
+		  and  tr.STATUS in ('${status}')
+		</if>
+		<if test="startTime!=null">
+			and  tr.DUEDATE &gt;=#{startTime}
+		</if>
+		<if test="endTime!=null">
+			and  tr.DUEDATE &lt;=#{endTime}
+		</if>
+		 order by tr.DUEDATE ASC
+	</select>
+	
+	<!-- 根据OrderId查询userID -->
+	<!-- <select id="loanRepaymentPlan" parameterType="com.zhongyang.java.vo.loan.LoanVo" resultType="com.zhongyang.java.vo.loan.LoanRepaymentVo">
+		SELECT
+		  tr.CURRENTPERIOD currentperiod,
+		  tr.STATUS status,
+		  tr.AMOUNTINTEREST amountinterest,
+		  tr.AMOUNTOUTSTANDING amountoutstanding,
+		  tr.AMOUNTPRINCIPAL amountprincipal,
+		  tr.DUEDATE duedate,
+		  tl.TITLE title
+		  FROM TB_LOAN_REPAYMENT tr,TB_LOAN tl 
+		  WHERE tr.STATUS IN('UNDUE','REPAYED')  
+		  AND tl.id = tr.LOAN_ID
+		  AND tl.LOANUSERID = #{loanUserId}
+		order by tr.DUEDATE ASC
+	</select> -->
+	<!-- 根据OrderId查询userID -->
+	<!-- <select id="loanRepaymentPlanStatus" parameterType="com.zhongyang.java.vo.loan.LoanVo" resultType="com.zhongyang.java.vo.loan.LoanRepaymentVo">
+		SELECT
+		  tr.CURRENTPERIOD currentperiod,
+		  tr.STATUS status,
+		  tr.AMOUNTINTEREST amountinterest,
+		  tr.AMOUNTOUTSTANDING amountoutstanding,
+		  tr.AMOUNTPRINCIPAL amountprincipal,
+		  tr.DUEDATE duedate,
+		  tl.TITLE title
+		  FROM TB_LOAN_REPAYMENT tr,TB_LOAN tl 
+		  WHERE tr.STATUS IN('UNDUE','REPAYED')  
+		  AND tl.id = tr.LOAN_ID
+		  AND tl.LOANUSERID = #{loanUserId}
+		order by tr.DUEDATE ASC
+	</select> -->
+	
+</mapper>

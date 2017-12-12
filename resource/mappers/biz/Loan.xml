@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.zhongyang.java.dao.LoanDao'>
+	<resultMap type="com.zhongyang.java.pojo.Loan" id="rm">
+		<id column="ID" property="id"/>
+		<result column="SERIAL" property="serial"/>
+		<result column="AMOUNT" property="amount"/>
+		<result column="AUTOSPLITTED" property="autoSplitted"/>
+		<result column="BID_AMOUNT" property="bidAmount"/>
+		<result column="BID_NUMBER" property="bidNumber"/>
+		<result column="METHOD" property="method"/>
+		<result column="MORTGAGED" property="mortgaged"/>
+		<result column="ORDINAL" property="ordinal"/>
+		<result column="RATE" property="rate"/>
+		<result column="ADDRATE" property="addRate"/>
+		<result column="REWARDED" property="rewarded"/>
+		<result column="STATUS" property="status"/>
+		<result column="TIMECLEARED" property="timeCleared"/>
+		<result column="TIMEFAILED" property="timeFailed"/>
+		<result column="TIMEFINISHED" property="timeFinished"/>
+		<result column="TIMEOPEN" property="timeOpen"/>
+		<result column="TIMEOUT" property="timeOut"/>
+		<result column="TIMESETTLED" property="timeSettled"/>
+		<result column="TITLE" property="title"/>
+		<result column="DAYS" property="days"/>
+		<result column="MONTHS" property="months"/>
+		<result column="YEARS" property="years"/>
+		<result column="WHETHERTRANSFER" property="whetherTransfer"/>
+		<result column="LOANUSERID" property="loanUserId"/>
+		<result column="GUARANTEE_ID" property="guaranteeId"/>
+		<result column="GUARANTEE_REALM" property="guaranteeRealm"/>
+		<result column="PRODUCTID" property="productId"/>
+		<result column="PRODUCTNAME" property="productName"/>
+		<result column="GROUPID" property="groupId"/>
+		<result column="MORTGAGEDTYPE" property="mortgagedType"/>
+		<result column="MINAMOUNT" property="minAmount"/>
+		<result column="STEPAMOUNT" property="stepAmount"/>
+		<result column="MAXAMOUNT" property="maxAmount"/>
+		<result column="LOANSERVICEFEE" property="loanServiceFee"/>
+		<result column="LOANGUARANTEEFEE" property="loanGuaranteeFee"/>
+		<result column="LOANRISKFEE" property="loanRiskFee"/>
+		<result column="LOANMANAGEFEE" property="LoanManageFee"/>
+		<result column="LOANINTERESTFEE" property="loanInterestFee"/>
+		<result column="INVESTINTERESTFEE" property="investInterestFee"/>
+		<result column="LOANTIME" property="loanTime"/>
+		<result column="PROJECTID" property="projectId"/>
+		<result column="OTHER" property="other"/>
+		<result column="TIMESCHEDULED" property="timeScheduled"/>
+	</resultMap>
+
+	<sql id="sqlfield">
+		select ID id,SERIAL serial,AMOUNT amount,AUTOSPLITTED autoSplitted,
+			   BID_AMOUNT bidAmount,BID_NUMBER bidNumber,METHOD method,MORTGAGED mortgaged,
+			   ORDINAL ordinal,RATE rate,REWARDED rewarded,STATUS status,
+			   TIMECLEARED timeCleared,TIMEFINISHED timeFinished,TIMEOPEN timeOpen,TIMEOUT timeOut,
+			   TIMESETTLED timeSettled,TITLE title,DAYS days,MONTHS months,TIMEFAILED timeFailed,
+			   YEARS years,WHETHERTRANSFER whetherTransfer,LOANUSERID loanUserId,GUARANTEE_ID guaranteeId,
+			   GUARANTEE_REALM guaranteeRealm,PRODUCTID productId,PRODUCTNAME productName,GROUPID groupId,
+			   MORTGAGEDTYPE mortgagedType,MINAMOUNT minAmount,STEPAMOUNT stepAmount,MAXAMOUNT maxAmount,
+			   LOANSERVICEFEE loanServiceFee,LOANGUARANTEEFEE loanGuaranteeFee,LOANRISKFEE loanRiskFee,
+			   LOANMANAGEFEE LoanManageFee,LOANINTERESTFEE loanInterestFee,INVESTINTERESTFEE investInterestFee,LOANTIME loanTime,PROJECTID projectId,OTHER other,
+			   TIMESCHEDULED timeScheduled,ADDRATE addRate
+		from TB_LOAN where 1=1
+	</sql>
+	
+	<select id="selectLoanById" parameterType="com.zhongyang.java.pojo.Loan" resultMap="rm">
+		<include refid="sqlfield"/>
+			<if test="id!=null">
+				and ID=#{id}
+			</if>
+	</select>
+	<select id="selectLoanByLoan" parameterType="com.zhongyang.java.system.page.Page" resultMap="rm">
+		<include refid="sqlfield"/>
+			<if test="params.containsKey('productId')">
+				and PRODUCTID=#{params.productId}
+			</if>
+				and STATUS in('SCHEDULED','OPENED','FINISHED','SETTLED','CLEARED') 
+			<if test="params.containsKey('timeOpen')">
+				order by case STATUS when 'SCHEDULED' THEN 1 when 'OPENED' THEN 2 when 'FINISHED' THEN 3 when 'SETTLED' THEN 4 ELSE 5 END,${params.timeOpen} desc
+			</if>
+	</select>
+	
+	<select id="selectAllLoan" parameterType="com.zhongyang.java.system.page.Page" resultMap="rm">
+		<include refid="sqlfield"/>
+			and STATUS in('SCHEDULED','OPENED','FINISHED','SETTLED','CLEARED') 
+			<if test="params.containsKey('timeOpen')">
+				order by case STATUS when 'SCHEDULED' THEN 1 when 'OPENED' THEN 2 when 'FINISHED' THEN 3 when 'SETTLED' THEN 4 ELSE 5 END,${params.timeOpen} desc
+			</if>
+	</select>
+	<select id="slectTotalCount" parameterType="com.zhongyang.java.pojo.Loan" resultType="int">
+		select count(*) from TB_LOAN where STATUS in('SCHEDULED','OPENED','FINISHED','SETTLED','CLEARED')
+			<if test="productId!=null">
+				and PRODUCTID=#{productId}
+			</if>
+	</select>
+	<update id="updateLoan" parameterType="com.zhongyang.java.pojo.Loan">
+		update TB_LOAN 
+			<set>
+				<if test="bidAmount!=null">
+					BID_AMOUNT=#{bidAmount},
+				</if>
+				<if test="bidNumber!=null">
+					BID_NUMBER=#{bidNumber},
+				</if>
+				<if test="status!=null">
+					STATUS=#{status},
+				</if>
+				<if test="timeCleared!=null">
+					TIMECLEARED=#{timeCleared},
+				</if>
+				<if test="timeFinished!=null">
+					TIMEFINISHED=#{timeFinished},
+				</if>
+				<if test="timeOpen!=null">
+					TIMEOPEN=#{timeOpen},
+				</if>
+				<if test="timeOut!=null">
+					TIMEOUT=#{timeOut},
+				</if>
+				<if test="timeSettled!=null">
+					TIMESETTLED=#{timeSettled},
+				</if>
+				<if test="whetherTransfer">
+					WHETHERTRANSFER=#{whetherTransfer},
+				</if>
+			</set> 
+	    where ID = #{id}
+	</update>
+	<!-- 根据userID查询借款标的 -->
+	<select id="byUserIdLoanVo" parameterType="com.zhongyang.java.vo.loan.LoanVo"
+		resultType="com.zhongyang.java.pojo.Loan">
+		select ID id,AMOUNT amount,TIMEOPEN timeOpen, METHOD method, MONTHS months, RATE rate, STATUS status,LOANUSERID loanUserId,TITLE title,
+		LOANTIME loanTime  
+		from TB_LOAN 
+		where LOANUSERID = #{loanUserId} 
+		AND STATUS IN('OPENED','SETTLED','CLEARED','FINISHED','FAILED') 
+		<if test="startTime!=null">
+			and TIMEOPEN &gt;=#{startTime}
+		</if>
+		<if test="endTime!=null">
+			and TIMEOPEN &lt;=#{endTime}
+		</if>
+		ORDER BY TIMEOPEN DESC
+	</select>
+	
+	<!-- 根据userID查询借款标的 -->
+	<select id="byUserIdAndStatusLoanVo" parameterType="com.zhongyang.java.vo.loan.LoanVo"
+		resultType="com.zhongyang.java.pojo.Loan">
+		select ID id,AMOUNT amount, METHOD method, MONTHS months, RATE rate,ADDRATE addRate, STATUS status,LOANUSERID loanUserId,TITLE title,
+		LOANTIME loanTime  from TB_LOAN where LOANUSERID = #{loanUserId} 
+		<if test="status != null">
+		 and STATUS = #{status}
+		</if>
+		<if test="startTime!=null">
+			and TIMEOPEN &gt;=#{startTime}
+		</if>
+		<if test="endTime!=null">
+			and TIMEOPEN &lt;=#{endTime}
+		</if>
+		ORDER BY TIMEOPEN DESC
+	</select>
+</mapper>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>实名认证</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"  />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no,email=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="#ff5d16" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../../css/style.min.css" />
+    <script src="../../js/sea.js"></script>
+    <script src="../../js/flexible.js"></script>
+</head>
+<body>
+<div class="identity">
+    <div class="three">
+	    <header><a href="setUp.html"></a><span>实名认证</span></header>
+		<div class="enterText top">
+			<span class="alignLeft name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span>
+			<div class="alignRight setWidth realName"><input type="text" placeholder="请输入姓名" /></div>
+		</div>
+		<div class="aLine"></div>
+		<div class="enterText">
+			<span class="alignLeft">身份证号</span>
+			<div class="alignRight setWidth peopleID"><input type="text" placeholder="请输入身份证号" /></div>
+		</div>
+		<div class="aLine"></div>
+		<p class="msg">左右逢园不设资金池,与联动优势( 中国银联和中国移动联合发起成立的移动金融及移动电子商务产业链服务提供商 )合作,采用第三方托管形式管理用户资金,保障资金安全。</p>
+		<footer class="bottomBtn"><span>确定</span></footer>
+	</div>
+</div>
+<script>
+  seajs.use('./../../js/identity.js'); 
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.zhongyang.java.dao.ProofPhotoDao'>
+	<resultMap type="com.zhongyang.java.pojo.ProofPhoto" id="rm">
+		<id column="ID" property="id"/>
+		<result column="PHOTONAME" property="photoName"/>
+		<result column="URLPATH" property="urlPath"/>
+		<result column="PROJECTID" property="projectId"/>
+		<result column="SUBMITTIME" property="submitTime"/>
+	</resultMap>
+	<sql id="sqlfield">
+		select ID id,PHOTONAME photoName,URLPATH urlPath,PROJECTID projectId,SUBMITTIME submitTime from TB_PROOF_PHOTO where 1=1
+	</sql>
+	<select id="selectByProjectId" parameterType="String" resultMap="rm">
+		<include refid="sqlfield"/>
+			and PROJECTID=#{projectId}
+	</select>
+</mapper>

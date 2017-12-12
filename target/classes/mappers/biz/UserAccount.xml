@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+
+<mapper namespace='com.zhongyang.java.dao.UserAccountDao'>
+
+	<resultMap type="com.zhongyang.java.vo.useraccount.UserInvestMoneyVo" id="rm">
+		<id column="USERID" property="userid"/>
+		<result column="STATUS" property="status"/>
+		<result column="AmountInterest" property="amountInterest"/>
+		<result column="amountCapital" property="amountCapital"/>
+	</resultMap>
+
+<sql id="selectfield">
+SELECT I.USERID userid ,R.STATUS status,SUM(R.AMOUNTINTEREST) AmountInterest,SUM(R.AMOUNTPRINCIPAL) amountCapital FROM TB_INVEST_REPAYMENT R
+LEFT JOIN TB_INVEST I ON R.INVEST_ID = I.ID
+WHERE 1=1
+
+
+</sql>
+
+<select id="selectUserAccountInfo" parameterType="String" resultMap="rm">
+<include refid="selectfield"/>
+<if test="_parameter!=null and _parameter!=''">
+and 
+I.USERID = #{_parameter}
+</if>
+AND I.STATUS in ('SETTLED','CLEARED')
+GROUP BY R.STATUS;
+</select>
+
+	<resultMap type="com.zhongyang.java.vo.useraccount.UserInvestMoneyVo" id="investRecord">
+		<id column="USERID" property="userid"/>
+		<result column="STATUS" property="status"/>
+		<result column="AmountInterest" property="amountInterest"/>
+		<result column="amountCapital" property="amountCapital"/>
+	</resultMap>
+
+<sql id="selectUserInvestInfoSql">
+SELECT 
+    R.AMOUNTINTEREST amountInterest,
+    R.AMOUNTPRINCIPAL amountPrincipal,
+    I.SUBMITTIME investTime,
+    L.TITLE title,
+    R.STATUS repayStatus,
+    I.REPAYMETHOD repayMethod,
+    R.DUEDATE dueDate,
+    R.REPAYDATE repayDate,
+    R.CURRENTPERIOD currentPeriod,
+    L.STATUS loanStatus,
+    L.TIMESETTLED timeSettled,
+    L.DAYS days,
+    L.MONTHS months,
+    L.YEARS years,
+    L.PRODUCTNAME productName,
+    I.USERID userId,
+    I.ID investId
+from
+    TB_INVEST I
+        LEFT JOIN
+    TB_INVEST_REPAYMENT R ON I.ID = R.INVEST_ID
+        LEFT JOIN
+    TB_LOAN L ON L.ID = I.LOANID
+WHERE
+    I.ID = R.INVEST_ID AND L.ID = I.LOANID
+</sql>
+	<resultMap type="com.zhongyang.java.vo.useraccount.UserInvestRecordVo" id="irv">
+		<id column="userId" property="userId"/>
+		<result column="repayStatus" property="repayStatus"/>
+		<result column="amountInterest" property="amountInterest"/>
+		<result column="amountPrincipal" property="amountPrincipal"/>
+		<result column="title" property="title"/>
+		<result column="repayMethod" property="repayMethod"/>
+		<result column="dueDate" property="dueDate"/>
+		<result column="repayDate" property="repayDate"/>
+		<result column="currentPeriod" property="currentPeriod"/>
+		<result column="loanStatus" property="loanStatus"/>
+		<result column="timeSettled" property="timeSettled"/>
+		<result column="days" property="days"/>
+		<result column="months" property="months"/>
+		<result column="years" property="years"/>
+		<result column="investTime" property="investTime"/>
+		<result column="productName" property="productName"/>
+
+
+	</resultMap>
+	
+<select id="selectUserInvestInfo" parameterType="com.zhongyang.java.system.page.Page" resultMap="irv">
+<include refid="selectUserInvestInfoSql"/>
+<if test="params.containsKey('userId')">	
+and 
+I.USERID = #{params.userId}
+</if>
+
+<if test="params.containsKey('repayStatus') and params.repayStatus != null and params.repayStatus != ''">
+and R.STATUS in ('${params.repayStatus}')
+</if>
+<if test="params.containsKey('dueDateStart') and params.dueDateStart != null and params.dueDateStart != ''">
+and  str_to_date(DUEDATE,'%Y-%m-%d') &gt;= #{params.dueDateStart}
+</if>
+<if test="params.containsKey('dueDateEnd') and params.dueDateEnd != null and params.dueDateEnd !=''">
+AND str_to_date(DUEDATE,'%Y-%m-%d') &lt;= #{params.dueDateEnd}
+</if>
+and I.STATUS in ('SETTLED','CLEARED')
+ORDER BY 
+<if test="params.status=='UN'">R.DUEDATE asc</if>
+<if test="params.status=='PR'" >R.REPAYDATE desc</if>
+<if test="params.status=='' or params.status==null" >L.TITLE,R.CURRENTPERIOD</if>
+
+</select>
+
+<sql id="sqlforUserLoanInvestRecord">
+SELECT 
+   L.TITLE title,I.AMOUNT amount,L.RATE rate,I.REPAYMETHOD repayMethod,I.STATUS investStatus,L.STATUS loanStatus,
+    L.TIMESETTLED timeSettled,L.DAYS days,
+    L.MONTHS months,
+    L.YEARS years,
+    I.USERID userId,
+    L.ID loanId,
+    L.ADDRATE addRate,
+    L.PRODUCTNAME productName,
+    I.SUBMITTIME investTime,
+    I.ID investId,
+    C.ISDEL isdel
+from
+    TB_INVEST I  
+        LEFT JOIN TB_LOAN L ON L.ID = I.LOANID
+        LEFT JOIN TB_INVEST_CONTRACT_INFO C ON C.INVESTID=I.ID
+WHERE
+     L.ID = I.LOANID
+     AND I.STATUS IN('SETTLED','AUDITING','CLEARED')
+</sql>
+<resultMap type="com.zhongyang.java.vo.useraccount.UserInvestLoanVo" id="uirv">
+	
+		<result column="amount" property="amount"/>
+		<result column="rate" property="rate"/>
+		<result column="addRate" property="addRate"/>
+		<result column="title" property="title"/>
+		<result column="repayMethod" property="repayMethod"/>
+		<result column="investStatus" property="investStatus"/>
+		<result column="loanId" property="loanId"/>
+		<result column="loanStatus" property="loanStatus"/>
+		<result column="timeSettled" property="timeSettled"/>
+		<result column="days" property="days"/>
+		<result column="months" property="months"/>
+		<result column="years" property="years"/>
+<result column="investTime" property="investTime"/>
+<result column="productName" property="productName"/>
+<result column="investId" property="investId"/>
+<result column="isDel" property="isDel"/>
+
+	</resultMap>
+	
+<select id="selectUserLoanInvestInfo" parameterType="com.zhongyang.java.system.page.Page" resultMap="uirv">
+<include refid="sqlforUserLoanInvestRecord"/>
+<if test="params.containsKey('userId')">	
+and 
+I.USERID = #{params.userId}
+</if>
+
+<if test="params.containsKey('loanStatus') and params.loanStatus!=null and params.loanStatus!=''">
+ and	L.STATUS in(${params.loanStatus})
+</if>
+				<if test="params.containsKey('dateStart') and params.dateStart != null and params.dateStart != ''">
+				AND L.TIMESETTLED &gt;= #{params.dateStart}
+		</if>	
+				<if test="params.containsKey('dateEnd') and params.dateEnd !=null and params.dateEnd!=''">
+				AND L.TIMESETTLED &lt;= #{params.dateEnd}
+		</if>	
+
+ORDER BY I.SUBMITTIME desc
+
+</select>
+
+
+	<resultMap type="com.zhongyang.java.vo.useraccount.FundRecordAccount" id="frrm">
+		<id column="ID" property="id"/>
+		<result column="DTYPE" property="dtype"/>
+		<result column="AMOUNT" property="amount"/>
+		<result column="DESCRIPTION" property="description"/>
+		<result column="OPERATION" property="operation"/>
+		<result column="ORDERID" property="orderid"/>
+		<result column="RECORDPRIV" property="recordpriv"/>
+		<result column="STATUS" property="status"/>
+		<result column="TIMERECORDED" property="timerecorded"/>
+		<result column="TRANSACTIONID" property="transactionid"/>
+		<result column="TYPE" property="type"/>
+		<result column="ENTITYID" property="entityid"/>
+		<result column="FUND_ACCOUNT_ID" property="fundAccountId"/>
+		<result column="REALM" property="realm"/>
+		<result column="USER_ID" property="userId"/>
+	</resultMap>
+	<sql id="sqlforFundRecord">
+	select ID id,DTYPE dtype,AMOUNT amount,DESCRIPTION description,OPERATION operation,ORDERID orderid, RECORDPRIV recordpriv,STATUS status,
+	TIMERECORDED timerecorded,TRANSACTIONID transactionid,TYPE type,ENTITYID entityid,FUND_ACCOUNT_ID fundAccountId,REALM realm,USER_ID userId from TB_FUND_RECORD where 1=1
+	</sql>
+	<select id="selectUserFundRecord" parameterType="com.zhongyang.java.system.page.Page" resultMap="frrm">
+	<include refid="sqlforFundRecord"/>
+<if test="params.containsKey('userId')">
+				and USER_ID=#{params.userId}
+			</if>
+		<if test="params.containsKey('type') and params.type != null and params.type !=''">
+			AND TYPE = #{params.type}
+		</if>	
+				<if test="params.containsKey('dateStart') and params.dateStart != null and params.dateStart != ''">
+				AND TIMERECORDED &gt;= #{params.dateStart}
+		</if>	
+				<if test="params.containsKey('dateEnd') and params.dateEnd !=null and params.dateEnd!=''">
+				AND TIMERECORDED &lt;= #{params.dateEnd}
+		</if>	
+		AND OPERATION NOT IN('RELEASE','FREEZE','INITIALIZED')
+		order by TIMERECORDED desc	
+	</select>
+</mapper>

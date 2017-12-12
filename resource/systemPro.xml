@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SYSTEM>
+    <!--或许手机验证码间隔时-->
+    <INTERVALTIME>60</INTERVALTIME>
+   	<!--或许手机验证码次-->
+    <ATTEMPTNUM>4</ATTEMPTNUM>
+   <ZYCFMARKET_IP>http://114.246.11.158:9000/zycfMarket</ZYCFMARKET_IP>
+   <ZYCFMARKET_DOMAIN_NAME>http://114.246.11.158:9000</ZYCFMARKET_DOMAIN_NAME>
+
+   <NOTIFYURL>
+        <REPAYPTO>http://114.246.11.158:9000/zycfMarket/repayto</REPAYPTO>
+        <REPAYTOP>http://114.246.11.158:9000/zycfMarket/callBackRepayTop</REPAYTOP>
+        <AGREEMENT>http://114.246.11.158:9000/zycfMarket/agreementCallBack</AGREEMENT>
+        <CANCLEAGREEMENT>http://114.246.11.158:9000/zycfMarket/cancleAgreementCallBack</CANCLEAGREEMENT>
+
+   </NOTIFYURL>
+   <CONTRACT_HOME>F://contracts/</CONTRACT_HOME>
+   <SECOND_CONTRACT_HOME>F://newcontracts/</SECOND_CONTRACT_HOME>
+    <ZYCF_UMP_ACCOUNT>7001044</ZYCF_UMP_ACCOUNT>
+<!--     <ZYCF_UMP_ACCOUNT>7050044</ZYCF_UMP_ACCOUNT> -->
+   <ZYCF_UMP_SIGN_TYPE>RSA</ZYCF_UMP_SIGN_TYPE>
+   <ZYCF_UMP_CHARSET>UTF-8</ZYCF_UMP_CHARSET>
+   <ZYCF_UMP_RES_FORMAT>HTML</ZYCF_UMP_RES_FORMAT>
+   <ZYCF_UMP_VERSION>1.0</ZYCF_UMP_VERSION>
+   <ZYCF_BACK_CODE>CMB</ZYCF_BACK_CODE>
+   
+   <!-- 注册赠送体验金金额-->
+   <ZYCF_ADDUSER_AMOUNT>6000</ZYCF_ADDUSER_AMOUNT>
+   <!-- 实名认证赠送体验金金额 -->
+   <ZYCF_IDNUM_AMOUNT>6000</ZYCF_IDNUM_AMOUNT>
+   <!-- 体验金有效天数 -->
+   <ZYCF_AMOUNT_LIMITDAYS>30</ZYCF_AMOUNT_LIMITDAYS>
+	
+	<!-- 充值赠送红包       充值金额、有效天数(天)、月标红包起投额度、月标红包额度、季度标红包起投额度、季度标红包额度。。。。。。-->
+	<ZYCF_RECHARGE_LIMITAMOUNT>
+		<ZYCF_RECHARGE_FIRSTAMOUNT>0,30,10000,2,10000,8,10000,15,10000,30</ZYCF_RECHARGE_FIRSTAMOUNT>
+	</ZYCF_RECHARGE_LIMITAMOUNT>
+	
+	<!-- 投资赠送红包:发放投资额度，红包使用起投额度,红包金额，限制标的期限(0代表无限制)，有效天数(天)-->
+	<ZYCF_ALL_LIMITAMOUNT>
+		<ZYCF_ALL_FIRSTAMOUNT>10000,10000,2,0,30</ZYCF_ALL_FIRSTAMOUNT>
+	</ZYCF_ALL_LIMITAMOUNT>
+		
+	<!-- 投资赠送红包:发放投资额度，红包使用起投额度,红包金额，限制标的期限(0代表无限制)，有效天数(天)-->
+	<ZYCF_ONE_LIMITAMOUNT>
+		<ZYCF_ONE_FIRSTAMOUNT>10000,10000,2,1,30</ZYCF_ONE_FIRSTAMOUNT>
+	</ZYCF_ONE_LIMITAMOUNT>
+	
+	<!-- 投资赠送红包:发放投资额度，红包使用起投额度,红包金额，限制标的期限(0代表无限制)，有效天数(天)-->	
+	<ZYCF_THREE_LIMITAMOUNT>
+		<ZYCF_THREE_FIRSTAMOUNT>10000,10000,8,3,30</ZYCF_THREE_FIRSTAMOUNT>
+	</ZYCF_THREE_LIMITAMOUNT>
+	
+	<!-- 投资赠送红包:发放投资额度，红包使用起投额度,红包金额，限制标的期限(0代表无限制)，有效天数(天)-->
+	<ZYCF_SIX_LIMITAMOUNT>
+		<ZYCF_SIX_FIRSTAMOUNT>10000,10000,15,6,30</ZYCF_SIX_FIRSTAMOUNT>
+	</ZYCF_SIX_LIMITAMOUNT>
+	
+	<!-- 投资赠送红包:发放投资额度，红包使用起投额度,红包金额，限制标的期限(0代表无限制)，有效天数(天)-->
+	<ZYCF_TWELVE_LIMITAMOUNT>
+		<ZYCF_TWELVE_FIRSTAMOUNT>10000,10000,30,12,30</ZYCF_TWELVE_FIRSTAMOUNT>
+	</ZYCF_TWELVE_LIMITAMOUNT>
+	
+   <!--银行编号-->
+   <BANKCODE></BANKCODE>
+   <!--银行名称-->
+   <ABNKNAME></ABNKNAME>
+   <!--单日限额-->
+   <DAYLIMITAMOUNT></DAYLIMITAMOUNT>
+   <!--单笔限额-->
+   <SingleAmount></SingleAmount>
+   <!--充值利率-->
+   <RECHARGERATES>0</RECHARGERATES>
+   <!--提现手续费-->
+   <WITHDRAWFEE>2</WITHDRAWFEE>
+   <!--最低充值额度-->
+   <MINRECHARGE>100</MINRECHARGE>
+   <!-- app充值限额 请勿随意改动以下节点中数据的位置,如：10,20,中国工商银行-->
+   <!--每笔交易额度限制,每日交易额度,银行名字-->    
+   <BANKLIST>
+     <PSBC>1,1,邮储银行</PSBC><!-- 联动优势不支持此银行的快捷方式 -->
+     <CEB>10,20,光大银行</CEB>
+     <ABC>5,5,中国农业银行</ABC>
+     <CCB>10,20,中国建设银行</CCB>
+     <GDB>10,20,广发银行</GDB>
+     <COMM>5,5,交通银行</COMM>
+     <CMBC>10,20,中国民生银行</CMBC>
+     <BOC>1,1,中国银行</BOC>
+     <SPAB>10,20,平安银行</SPAB>
+     <CMB>10,20,招商银行</CMB>
+     <ICBC>10,20,中国工商银行</ICBC>
+     <CITIC>10,20,中信银行</CITIC>
+     <CIB>5,5,兴业银行</CIB>
+     <SPDB>5,5,浦发银行</SPDB>
+
+   </BANKLIST>
+   <PCBINDINGCARDLIST>
+   	 <BOC>中国银行</BOC>
+   	 <ABC>中国农业银行</ABC>
+   	 <CCB>中国建设银行</CCB>
+   	 <COMM>交通银行</COMM>
+   	 <PSBC>邮储银行</PSBC>
+   	 <CMBC>中国民生银行</CMBC>
+   	 <CITIC>中信银行</CITIC>
+   	 <CEB>光大银行</CEB>
+   	 <HXB>华夏银行</HXB>
+   	 <GDB>广发银行</GDB>
+   	 <CIB>兴业银行</CIB>
+   	 <SPDB>浦发银行</SPDB>
+   	 <CZSB>浙商银行</CZSB>
+   	 <SPAB>平安银行</SPAB>
+   	 <BHB>河北银行</BHB>
+   	 <LZB>兰州银行</LZB>
+   	 <CMB>招商银行</CMB>
+   	 <ICBC>中国工商银行</ICBC> 
+   </PCBINDINGCARDLIST>
+       <!-- APP 版本号和url -->
+    <ZYCFAPPVERSION>1</ZYCFAPPVERSION>
+    <ZYCFAPPURL>/appVersion/app-release.apk</ZYCFAPPURL>
+    <ZYCFMARKET_APPIP>http://114.246.11.158:9000</ZYCFMARKET_APPIP>
+</SYSTEM>

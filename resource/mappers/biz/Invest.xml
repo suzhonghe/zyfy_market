@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='com.zhongyang.java.dao.InvestDao'>
+	<resultMap type="com.zhongyang.java.pojo.Invest" id="rm">
+		<id column="ID" property="id"/>
+		<result column="ORDERID" property="orderId"/>
+		<result column="AMOUNT" property="amount"/>
+		<result column="BIDMETHOD" property="bidmethod"/>
+		<result column="CREDITASSIGNID" property="creditassignid"/>
+		<result column="LOANID" property="loanid"/>
+		<result column="ORIGINALAMOUNT" property="originalamount"/>
+		<result column="PURPOSE" property="purpose"/>
+		<result column="RATE" property="rate"/>
+		<result column="REPAYMETHOD" property="repaymethod"/>
+		<result column="SOURCE" property="source"/>
+		<result column="STATUS" property="status"/>
+		<result column="SUBMITTIME" property="submittime"/>
+		<result column="USERID" property="userid"/>
+		<result column="DAYS" property="days"/>
+		<result column="MONTHS" property="months"/>
+		<result column="YEARS" property="years"/>
+		<result column="FRESHAMOUNTID" property="freshAmountId"/>
+	</resultMap>
+	<sql id="sqlfield">
+		select ID id,ORDERID orderId,AMOUNT amount,BIDMETHOD bidmethod,CREDITASSIGNID creditassignid,LOANID loanid,ORIGINALAMOUNT originalamount,PURPOSE purpose,
+			RATE rate,REPAYMETHOD repaymethod,SOURCE source,STATUS status,SUBMITTIME submittime,USERID userid,DAYS days,MONTHS months,YEARS years,FRESHAMOUNTID freshAmountId
+		from TB_INVEST where 1=1
+	</sql>
+	<insert id="insertInvest" parameterType="com.zhongyang.java.pojo.Invest">
+		insert into TB_INVEST (ID,ORDERID,AMOUNT,BIDMETHOD,LOANID,ORIGINALAMOUNT,PURPOSE,RATE,REPAYMETHOD,STATUS,SUBMITTIME,USERID,MONTHS,FRESHAMOUNTID)
+			values(#{id},#{orderId},#{amount},#{bidmethod},#{loanid},#{originalamount},#{purpose},#{rate},#{repaymethod},#{status},#{submittime},#{userid},#{months},#{freshAmountId})
+	</insert>
+	<update id="updateInvest" parameterType="com.zhongyang.java.pojo.Invest">
+		update TB_INVEST 
+			<set>
+				<if test="status!=null">
+					STATUS=#{status},
+				</if>
+			</set>
+		where ORDERID=#{orderId}
+	</update>
+	<select id="selectInvestsByLoanId" parameterType="com.zhongyang.java.system.page.Page" resultMap="rm">
+		<include refid="sqlfield"/>
+			and STATUS in ('AUDITING','SETTLED','CLEARED')
+			<if test="params.containsKey('loanId')">
+				and LOANID=#{params.loanId}
+			</if>
+			<if test="params.containsKey('submittime')">
+				order by ${params.submittime}
+			</if> 
+			<if test="params.containsKey('sort')">
+				${params.sort}
+			</if>
+	</select>
+	<select id="selectInvestStatusByUserID" parameterType="com.zhongyang.java.pojo.User" resultType="java.util.Map">
+		select loan.`STATUS`,COUNT(*),SUM(invest.AMOUNT) from TB_INVEST invest
+		LEFT JOIN TB_LOAN  loan on invest.LOANID=loan.ID
+		WHERE invest.USERID=#{UserID}
+		GROUP BY loan.`STATUS`
+	</select>
+	<select id="selectInvesSurvey" parameterType="com.zhongyang.java.pojo.User" resultType="java.util.Map">
+		select tl.STATUS status, COUNT(*) count,SUM(ti.AMOUNT) amount from TB_INVEST ti
+			LEFT JOIN TB_LOAN  tl on ti.LOANID=tl.ID
+			WHERE ti.USERID=#{id} and ti.STATUS in('AUDITING','SETTLED','CLEARED') and tl.STATUS in('OPENED','FINISHED','SETTLED','CLEARED')
+			GROUP BY tl.STATUS
+	</select>
+	<select id="selectByOrderId" parameterType="com.zhongyang.java.pojo.Invest" resultType="java.util.Map">
+		select ti.AMOUNT investAmount,tl.ID loanId,tl.TITLE title,tl.RATE rate,tl.ADDRATE addRate,tl.MONTHS months,tl.AMOUNT loanAmount,tl.METHOD method,tl.BID_AMOUNT bidAmount,tl.PRODUCTNAME productName from TB_INVEST ti
+			left join TB_LOAN tl on ti.LOANID=tl.ID
+		where 1=1
+			<if test="orderId!=null">and ti.ORDERID=#{orderId}</if>
+	</select>
+	<select id="selectById" parameterType="com.zhongyang.java.pojo.Invest" resultMap="rm">
+		<include refid="sqlfield"/>
+			<if test="id!=null">and ID=#{id}</if>
+	</select>
+	<select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
+		select tu.NAME name,ti.AMOUNT amount,ti.SUBMITTIME submitTime from TB_INVEST ti left join TB_USER tu on ti.USERID=tu.ID where ti.STATUS in('AUDITING','SETTLED','CLEARED')
+		<if test="_parameter.containsKey('startTime')">and ti.SUBMITTIME &gt;=#{startTime}</if>
+		<if test="_parameter.containsKey('endTime')">and ti.SUBMITTIME &lt;=#{endTime}</if>
+		order by SUBMITTIME desc
+	</select>
+	<select id="selectByInvest" parameterType="com.zhongyang.java.pojo.Invest" resultType="java.util.Map">
+		select r.ID id,r.INVEST_ID investId,r.DUEDATE dueDate,r.STATUS status from TB_INVEST i left join TB_INVEST_REPAYMENT r on i.ID=r.INVEST_ID
+		where i.USERID=#{userid} and i.STATUS in('SETTLED','AUDITING')
+	</select>
+</mapper>

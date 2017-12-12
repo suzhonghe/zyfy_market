@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+
+<mapper namespace='com.zhongyang.java.dao.UmpAgreementDao'>
+	<select id="byUserUmpAgreement"  parameterType="com.zhongyang.java.pojo.UmpAgreement" resultType="com.zhongyang.java.pojo.UmpAgreement">
+		select * from TB_UMP_AGREEMENT where <if test="userid !=null"> USERID = #{userid}</if>
+	</select>
+
+    <insert id="insertUmpAgreement" parameterType="com.zhongyang.java.pojo.UmpAgreement">
+         insert into
+		TB_UMP_AGREEMENT(ACCOUNTNAME,CARDNO,DEBIT,INSTANT,INVEST,REPAY,TIMECREATED,TIMELASTUPDATED,USERID)
+		values
+		(#{accountname},#{cardno},#{debit},#{instant},#{invest},#{repay},#{timecreated},#{timelastupdated},#{userid})
+    </insert>
+
+    <update id="updateAgreement" parameterType="com.zhongyang.java.pojo.UmpAgreement">
+          update TB_UMP_AGREEMENT set
+          INSTANT= #{instant},
+          INVEST= #{invest},
+          REPAY= #{repay},
+          DEBIT= #{debit},
+          TIMELASTUPDATED = #{timelastupdated}
+          where USERID = #{userid}
+
+    </update>
+</mapper>

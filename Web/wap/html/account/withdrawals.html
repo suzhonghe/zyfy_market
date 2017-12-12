@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>提现</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"  />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no,email=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="#ff5d16" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../../css/style.min.css" />
+    <script src="../../js/sea.js"></script>
+    <script src="../../js/flexible.js"></script>
+</head>
+<body>
+<div class="withdrawalsPage">
+	<header><a href="../myAccount.html"></a><span>提现</span><a class="rechargeRecord" href="withdrawalsRecord.html">提现记录</a></header>
+	<div class="bankBar">
+		<div class="alignLeft setWidth bankBg"></div>
+        <div class="alignLeft">
+        	<p class="bankName"></p>
+		    <p class="account"></p>
+        </div>
+	</div>
+	<div class="aRows balance">
+		<p class="alignLeft">现金余额</p>
+		<div class="alignLeft marginLeft availableAmount"><strong></strong>元</div>
+	</div>
+	<div class="aRows rechargeAmount">
+		<p class="alignLeft">提现金额</p>
+		<div class="alignRight withdrawalsAmount"><input type="text" placeholder="请输入提现金额" />元</div>
+	</div>
+	<div class="aRows counterFee">
+		<p class="alignLeft">手续费</p>
+		<div class="alignLeft marginLeft withdrawRates"><strong></strong>元</div>
+	</div>
+	<div class="info">
+		<p class="msg"><span></span><strong>提现手续费：</strong> 提现时，联动优势第三方支付平台扣除<em></em>元/笔的手续费。</p>
+		<p class="msg"><span></span><strong>到账时间：</strong> 16:00以前提现，当日可到账；16:00以后提现，下一工作日到账；周六、周日、节假日提现，下一工作日到账。</p>
+		<p class="msg"><span></span><strong>提现金额：</strong> <em></em>元&lt;提现金额≤100.00万元。</p>
+		<p class="msg"><span></span>如果提现金额没有及时到账，可通过拨打客服热线 400-690-1123（ 9:00-17:30 ）寻求帮助。</p>
+	</div>
+	<footer class="bottomBtn"><span>确认提现</span></footer>
+</div>
+<script>
+seajs.use('./../../js/withdrawals.js');
+</script>
+</body>
+</html>

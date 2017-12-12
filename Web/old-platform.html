@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-capable" content="yes"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no,email=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="keywords" content="左右逢园、左右逢园官网、中阳财富、互联网金融、P2P理财、网贷平台、家庭理财、投资理财、投资收益、财富管理、本息保障、合法合规、月月发、季度红、半年财、全年赢、zuoyoufy">
+    <meta name="description" content="左右逢园（www.zuoyoufy.com）作为中阳财富投资控股有限公司旗下优秀的、专业的网贷信息中介平台，为投融资者提供安全透明、高效稳定、诚信规范的互联网金融服务。">
+    <title>左右逢园原平台提现页面</title>
+    <link rel="stylesheet" href="old/normalize.css">
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+        }
+        input {
+            outline: none;
+        }
+        h2 {
+            text-align: center;
+        }
+        .login {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            text-align: center;
+            background-color: #e0e0e0;
+        }
+        .login:before {
+            height: 100%;
+            display: inline-block;
+            content: '';
+            vertical-align: middle;
+        }
+        .login-frame {
+            padding: 0 100px 30px;
+            display: inline-block;
+            vertical-align: middle;
+            background-color: #fff;
+        }
+        .login h3 {
+            height: 56px;
+            color: #75bcec;
+            font-size: 24px;
+            text-align: center;
+            line-height: 56px;
+            margin: 0;
+        }
+        .login p {
+            line-height: 30px;
+            text-align: left;
+        }
+        .login span, .login img, .login input {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .login .msg {
+            width: 60px;
+            text-align: right;
+            color: #666;
+        }
+        .login input {
+            width: 160px;
+            height: 20px;
+            padding: 6px 5px;
+            border: 1px solid #ccc;
+        }
+        .login .btn {
+            padding: 0;
+            text-align: center;
+        }
+        .login .btn input {
+            width: 120px;
+            height: 42px;
+            border-radius: 4px;
+            background-color: #ff6f0a;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .login .btn input:hover {
+            text-decoration: underline;
+        }
+        .account_info p{
+            text-align: center;
+            padding-top: 60px;
+        }
+        .account_info span {
+            display: inline-block;
+            vertical-align: middle;
+            padding: 6px 40px;
+            line-height: 30px;
+        }
+        .account_info .btn {
+            padding: 6px 20px;
+            height: 30px;
+            border-radius: 4px;
+            background-color: #4caee4;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .account_info select, .account_info input, .account_info span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .account_info input {
+            padding: 6px 10px;
+        }
+        .mask {
+            background-color: rgba(0,0,0,0.7);
+        }
+        .mask .login-frame, .mask p {
+            padding: 0 20px;
+        }
+        .btn {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="login" v-show="!loginInfo.isLogin">
+        <div class="login-frame">
+            <h3>左右逢园老平台登录</h3>
+            <div class="container">
+                <p>
+                    <span class="msg">用户名</span>
+                    <input type="text"  v-model="loginInfo.username"/>
+                </p>
+                <p>
+                    <span class="msg">密码</span>
+                    <input class="password" type="password"  v-model="loginInfo.password"/>
+                </p>
+                <p class="btn">
+                    <input @click="loginFn" type="button" value="登录"/>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="account_info">
+        <h2>左右逢园老平台提现页面</h2>
+        <p>
+            <span>{{ userInfo.username }}</span>
+            <span>现金余额：{{ userInfo.availableAmount }} 元</span>
+            <span @click="withdraw" class="btn">提现</span>
+            <span @click="toPlatform" class="btn">转账到平台</span>
+        </p>
+        <p>
+            <span>{{ userInfo.bankName }}</span>
+            <span>{{ userInfo.bankId }}</span>
+            <span  @click="bankListShow = !bankListShow" class="btn">{{ userInfo.bankId?"更换银行账户":"绑定银行账户" }}</span>
+            <!-- <span v-if="!userInfo.bankId" @click="bankListShow = !bankListShow" class="btn">绑定银行账户</span> -->
+        </p>
+        <p v-show="bankListShow">
+            <select v-model="selected">
+                <option v-for="option in optionList" :value="option.bankCode">
+                    {{ option.bankName }}
+                </option>
+            </select>
+            <input type="text" v-model="bank" placeholder="银行卡号">
+            <span @click="bindBank()" class="btn">确定</span>
+        </p>
+    </div>
+    <div class="login mask" v-show="msg.isShow">
+        <div class="login-frame">
+            <p>{{ msg.text }}</p>
+        </div>
+    </div>
+</div>
+    <script src="old/vue.min.js"></script>
+    <script src="old/axios.min.js"></script>
+    <script src="js/bank.js"></script>
+    <script>
+        var _URL = '/front/zycfMarket';
+        var app = new Vue({
+            el: '#app',
+            data: {
+                loginInfo: {
+                    username: '',
+                    password: '',
+                    isLogin: false
+                },
+                userInfo: {
+                    username: '',
+                    availableAmount: 0,
+                    bankName: '',
+                    bankId: ''
+                },
+                selected: '',
+                optionList: [],
+                bank: '',
+                bankListShow: false,
+                msg: {
+                    text: '这是提示信息',
+                    isShow: false
+                }
+            },
+            created () {
+                var This = this;
+                this.$nextTick(function () {
+                    This.isLogin()
+                })
+            },
+            methods: {
+                isLogin: function () {
+                    var This = this;
+                    axios.post(_URL + '/loginStatus')
+                    .then(function (response) {
+                        if (response.data.userName) {
+                            This.loginInfo.isLogin = true;
+                            This.userInfo.username = response.data.userName;
+                            This.getAccountInfo();
+                            This.getUserInfo();
+                            This.getBankList();
+                        } else {
+                            This.loginInfo.isLogin = false
+                        }
+                    })
+                    .catch(function (error) {
+                        This.loginInfo.isLogin = false;
+                    });
+                },
+                getAccountInfo: function () {
+                    var This = this;
+                    axios.post(_URL + '/userAccountInfo')
+                    .then(function (response) {
+                        This.userInfo.availableAmount = response.data.availableAmount
+                    })
+                    .catch(function (error) {
+                        This.msg.text = '余额查询出错，请尝试刷新';
+                        This.msg.isShow = true;
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                    });
+                },
+                getUserInfo: function () {
+                    var This = this;
+                    axios.post(_URL + '/user/userSettings')
+                    .then(function (response) {
+                        This.userInfo.username = response.data.name || response.data.mobile;
+                        if (response.data.cardauthenticated) {
+                            This.userInfo.bankName = response.data.bank;
+                            This.userInfo.bankId = response.data.account;
+                        }})
+                    .catch(function (error) {
+                        This.msg.text = '用户信息查询出错，请尝试刷新';
+                        This.msg.isShow = true;
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                    });
+                },
+                getBankList: function () {
+                    var This = this;
+                    axios.post(_URL + '/queryBankList', {
+                        number: '01'
+                    })
+                    .then(function (response) {
+                        if (response.data && response.data.length) {
+                            This.optionList = response.data;
+                            This.selected = response.data[0].bankCode;
+                        }
+                    })
+                },
+                loginFn: function () {
+                    var This = this
+                    This.msg.text = '登录中...';
+                    This.msg.isShow = true;
+                    axios.post(_URL + '/login', {
+                        loginname: This.loginInfo.username,
+                        passphrase: This.loginInfo.password
+                    })
+                    .then(function (response) {
+                        if (response.data.code == 1) {
+                            This.msg.isShow = false;
+                            This.loginInfo.isLogin = true;
+                            This.getAccountInfo();
+                            This.getUserInfo();
+                            This.getBankList();
+                        } else {
+                            This.msg.text = response.data.message
+                            setTimeout(function () {
+                                This.msg.isShow = false;
+                            }, 1500)
+                        }
+                    })
+                    .catch(function (error) {
+                        This.msg.text = '用户名或密码错误';
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                    });
+                },
+                withdraw: function () {
+                    var This = this
+                    if (This.userInfo.availableAmount <= 0) {
+                        This.msg.text = '没有可提取金额';
+                        This.msg.isShow = true;
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                        return
+                    };
+                    This.msg.text = '提现中...';
+                    This.msg.isShow = true;
+                    axios.post(_URL + '/umpWithdraw', {
+                        operatingLimit: This.userInfo.availableAmount
+                    })
+                    .then(function (response) {
+                        This.msg.isShow = false;
+                        window.open(response.data.prepareUmp, '_blank');
+                        
+                    })
+                    .catch(function (error) {
+                        This.msg.text = '提现出现错误，请尝试刷新';
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                    });
+                },
+                toPlatform: function () {
+                    var This = this
+                    if (This.userInfo.availableAmount <= 0) {
+                        This.msg.text = '余额不足';
+                        This.msg.isShow = true;
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                        return
+                    };
+                    This.msg.text = '操作中...';
+                    This.msg.isShow = true;
+                    axios.post(_URL + '/userToBusiness', {
+                        TransferAmount: This.userInfo.availableAmount
+                    })
+                    .then(function (response) {
+                        This.msg.isShow = false;
+                        window.open(response.data.prepareUmp, '_blank');
+                        
+                    })
+                    .catch(function (error) {
+                        This.msg.text = '提现出现错误，请尝试刷新';
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                    });
+                },
+                bindBank: function () {
+                    var bankUrl = '/bankCardBinding';
+                    if (this.userInfo.bankId) {
+                        bankUrl = '/modifyBankCard'
+                    }
+                    var This = this;
+                    var bankObj = distinctionBankCard( This.bank );
+                    var bankName = '';
+                    for(var i=0,l=This.optionList.length;i<l;i++){
+                        if(This.selected.indexOf(This.optionList[i]['bankCode']) == 0){
+                            bankName = This.optionList[i]['bankName'];
+                            break;
+                        }
+                    };
+                    if( !bankObj || !bankObj.bank || bankName != bankObj.bank ){
+                        This.msg.text = '您填写的卡号与发卡银行不一致，请重新选择发卡银行';
+                        This.msg.isShow = true;
+                        setTimeout(function () {
+                            This.msg.isShow = false;
+                        }, 1500)
+                        return;
+                    };
+                    axios.post(_URL + bankUrl, {
+                        bank: This.selected,
+                        account: This.bank
+                    })
+                    .then(function (response) {
+                        if (response.data.code == 1) {
+                            window.open(response.data.message, '_blank');
+                        } else {
+                            This.msg.text = response.data.message;
+                            This.msg.isShow = true;
+                            setTimeout(function () {
+                                This.msg.isShow = false;
+                            }, 1500)
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

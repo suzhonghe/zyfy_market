@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.zhongyang.java.dao.VirtualLoanDao'>
+	<resultMap type="com.zhongyang.java.pojo.VirtualLoan" id="rm">
+		<id column="ID" property="id"/>
+		<result column="AMOUNT" property="amount"/>
+		<result column="RATE" property="rate"/>
+		<result column="CREATETIME" property="createTime"/>
+		<result column="LOANDAY" property="loanDay"/>
+		<result column="STATUS" property="status"/>
+		<result column="METHOD" property="method"/>
+		<result column="TITLE" property="title"/>
+	</resultMap>
+	
+	<sql id="sqlfield">
+		select ID id,AMOUNT amount,STATUS status,RATE rate,LOANDAY loanDay,METHOD method,CREATETIME createTime,
+			TITLE title
+		from TB_VIRTUAL_LOAN where 1=1 
+	</sql>
+ 
+	<select id="selectVirtualLoanByParams" parameterType="com.zhongyang.java.pojo.VirtualLoan" resultMap="rm"> 
+		<include refid="sqlfield"/> 
+			<if test="status!=null">and STATUS=#{status}</if>
+			<if test="id!=null">and ID=#{id}</if>
+	</select>
+</mapper>

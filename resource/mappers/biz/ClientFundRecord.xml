@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.zhongyang.java.dao.ClientFundRecordDao'>
+<!-- 插入平台资金记录 -->
+  <insert id="addClientFundRecord" parameterType="com.zhongyang.java.pojo.ClientFundRecord">
+		INSERT INTO TB_CLIENT_FUND_RECORD
+            (ID,ACCOUNT,AMOUNT,DESCRIPTION,OPERATION,ORDERID,RECORDPRIV,STATUS,
+             TIMERECORDED,TRANSACTIONID,TYPE,USERID,ENTITYID,REALM)
+             VALUES(#{id},#{account},#{amount},#{description}, #{operation},#{orderid},
+		#{recordpriv},#{status},#{timerecorded},#{transactionid},#{type},#{userid},#{entityid},#{realm})
+	</insert>
+	
+	<update id="updateClientFundRecord" parameterType="com.zhongyang.java.pojo.ClientFundRecord">
+		update TB_CLIENT_FUND_RECORD
+			<set>
+				<if test="status!=null">STATUS=#{status},</if>
+			</set>
+		where ORDERID=#{orderid}
+	</update>
+</mapper>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>投资详情</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"  />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no,email=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="#ff5d16" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.min.css" />
+    <script src="../js/sea.js"></script>
+    <script src="../js/flexible.js"></script>
+</head>
+<body>
+<div class="investMain">
+	<header><a href="../index.html"></a><span>投资详情</span></header>
+	<div class="wrap">
+		<div class="bidDetails">
+			<div class="top">
+				<div class="amount">
+					<p class="amountInfo"><span></span></p>
+					<p>标的总额</p>
+				</div>
+				<div class="rate">
+					<p class="rateInfo"><span></span></p>
+					<p>年利率</p>
+				</div>
+				<div class="month">
+					<p class="monthInfo"><span></span></p>
+					<p>期限</p>
+				</div>
+			</div>
+			<div class="ProgressBar">
+				<div class="Progress">
+					<div class="ProgressTop"></div>
+				</div>
+				<div class="scale"></div>
+			</div>
+			<p class="surplus">剩余可投：<span></span>元</p>
+			<div class="productBar">
+				<span class="product"></span>
+				<span class="title"></span>
+				<span></span>
+			</div>
+			<p class="mothed">还款方式：<span></span></p>
+			<div class="weaterPositin"></div><!-- clear finished settled cleared -->
+		</div>
+		<ul class="subNav">
+			<li class="active">项目信息</li>
+			<li class="">常见问题</li>
+			<li class="">投标记录</li>
+		</ul>
+		<div class="wrapBox">
+			<div class="listBox active">
+				<div class="one">
+					<p class="hasBg bg1">公司简介</p>
+					<p class="firmInfo"></p>
+				</div>
+				<div>
+					<p class="hasBg bg2">经营范围</p>
+					<p class="operationRange"></p>
+				</div>
+				<div>
+					<p class="hasBg bg3">还款来源</p>
+					<p class="repaySource"></p>
+				</div>
+				<div>
+					<p class="hasBg bg4">资金用途</p>
+					<p class="riskInfo"></p>
+				</div>
+				<div>
+					<p class="hasBg bg5">风险措施</p>
+					<p class="description"></p>
+				</div>
+				<div>
+					<p class="hasBg bg6">审核认证</p>
+					<p class="authInfo">
+						<span>身份认证</span>
+						<span>实地认证</span>
+						<span>手机认证</span>
+						<span>信用认证</span>
+					</p>
+				</div>
+			</div>
+			<div class="question">
+				<p class="title">借款人出现逾期，坏账和不还钱怎么办？</p>
+				<p>如果借款人出现逾期或坏账，对该借贷行为担保的担保机构对每笔借款提供不可撤销的全额本息担保，贷款到期后，借款人出现任何问题，担保机构即会启动代偿机制，按照《保证合同》约定向投资人偿付所有剩余本金及利息。然后担保机构自行负责之后的追偿催收工作。投资者不会承担合同约定以外的任何损失，安全无风险。</p>
+				<p class="title">平台如果不存在了,投资者的收益如何保障？</p>
+				<p>作为信息中介平台，主要职能是交易撮合，即使平台不存在，投资者的收益也还是有足够保障的。首先投融双方的债权债务关系不会消失；其次担保公司会负责投资人的全额本息担保；最后独立于平台外的第三方支付平台有通路保证还本付息的资金会在项目到期日划转到投资人之前在平台上绑定的收款银行卡中。</p>
+			</div>
+			<div class="record"></div>
+		</div>
+	</div>
+	<footer class="bottomBtn"><span>投资</span></footer>
+</div>
+<script>
+    seajs.use('./../js/bidDetails.js');
+</script>
+</body>
+</html>

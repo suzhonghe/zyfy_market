@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>充值</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"  />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no,email=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="#ff5d16" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../../css/style.min.css" />
+    <script src="../../js/sea.js"></script>
+    <script src="../../js/flexible.js"></script>
+</head>
+<body>
+<div class="recharge">
+	<header><a href="../myAccount.html"></a><span>充值</span><a class="rechargeRecord" href="rechargeRecord.html">充值记录</a></header>
+	<div class="bankBar">
+		<div class="alignLeft setWidth bankBg"></div>
+        <div class="alignLeft">
+        	<p class="bankName"></p>
+		    <p class="account"></p>
+        </div>
+	</div>
+	<div class="limitAmount aRows">
+	    <div class="alignLeft timeLimit">单次充值限额：<span></span>万</div>
+	    <div class="alignRight dailyLimit">单日充值限额：<span></span>万</div>
+	</div>
+	<div class="aRows rechargeAmount">
+		<p class="alignLeft">充值金额</p>
+		<div class="alignRight rechargeMoney"><input type="text" placeholder="请输入充值金额" />元</div>
+	</div>
+	<div class="aRows payment">
+		<p class="alignLeft">实际到账</p>
+		<div class="alignLeft marginLeft reallyMoney">0.00元</div>
+	</div>
+	<div class="info">
+		<p class="msg"><span></span>充值时，联动优势第三方支付平台将扣除0.3%的手续费。目前暂免，由左右逢园平台垫付。</p>
+		<p class="msg"><span></span>如果您的充值金额超过银行卡限额，请通过电脑登录左右逢园官网 <em>https://www.zuoyoufy.com</em> 进行网银充值。</p>
+	</div>
+	<footer class="bottomBtn"><span>确认充值</span></footer>
+</div>
+<script>
+seajs.use("./../../js/recharge.js");
+</script>
+</body>
+</html>

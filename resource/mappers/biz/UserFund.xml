@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+
+<mapper namespace='com.zhongyang.java.dao.UserFundDao'>
+	<resultMap type="com.zhongyang.java.pojo.UserFund" id="rm">
+		<id column="USERID" property="userId"/>
+		<result column="AVAILABLE_AMOUNT" property="availableAmount"/>
+		<result column="DEPOSIT_AMOUNT" property="depositAmount"/>
+		<result column="DUE_IN_AMOUNT" property="dueInAmount"/>
+		<result column="DUE_OUT_AMOUNT" property="dueOutAmount"/>
+		<result column="FROZEN_AMOUNT" property="frozenAmount"/>
+		<result column="TIMECREATED" property="timeCreated"/>
+		<result column="TIMELASTUPDATED" property="timeLastUpdated"/>
+		<result column="TRANSFER_AMOUNT" property="transferAmount"/>
+		<result column="WITHDRAW_AMOUNT" property="withdrawAmount"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	<sql id="sqlfield">
+		select USERID userId,AVAILABLE_AMOUNT availableAmount,DEPOSIT_AMOUNT depositAmount,DUE_IN_AMOUNT dueInAmount,DUE_OUT_AMOUNT dueOutAmount,
+			FROZEN_AMOUNT frozenAmount,TIMECREATED timeCreated,TIMELASTUPDATED timeLastUpdated,TRANSFER_AMOUNT transferAmount,WITHDRAW_AMOUNT withdrawAmount,STATUS status
+		from TB_USER_FUND where 1=1
+	</sql>
+	<select id="byUserID"  parameterType="com.zhongyang.java.pojo.UserFund" resultMap="rm">
+		<include refid="sqlfield"/>
+			<if test="userId !=null"> 
+				and USERID = #{userId}
+			</if>
+	</select>
+
+	<insert id="addUserFund" parameterType="com.zhongyang.java.pojo.User">
+		insert into
+		TB_USER_FUND(USERID,TIMECREATED,TIMELASTUPDATED)
+		values
+		(#{userId},#{timeCreated},#{timeLastUpdated})
+	</insert>
+
+	<!-- 根据用户Id修改用户充值金额和可用金额，可用金额，冻结  -->
+	<update id="updateUserFundByUserID" parameterType="com.zhongyang.java.pojo.UserFund">  
+	    update TB_USER_FUND
+		    <set>
+		        <if test="depositAmount != null">
+		           DEPOSIT_AMOUNT = #{depositAmount},
+		        </if>
+		        <if test="availableAmount != null">
+		           AVAILABLE_AMOUNT = #{availableAmount},
+		        </if>
+		         <if test="frozenAmount != null">
+		           FROZEN_AMOUNT = #{frozenAmount},
+		        </if>
+		         <if test="withdrawAmount != null">
+		           WITHDRAW_AMOUNT = #{withdrawAmount},
+		        </if>
+		        <if test="timeLastUpdated != null">
+		           TIMELASTUPDATED = #{timeLastUpdated},
+		        </if>
+		    </set>
+	    where USERID = #{userId};
+    </update>
+	<update id="updateUserFund" parameterType="com.zhongyang.java.pojo.UserFund">
+		update TB_USER_FUND 
+			<set>
+				<if test="availableAmount!=null">
+					AVAILABLE_AMOUNT=#{availableAmount},
+				</if>
+				<if test="frozenAmount!=null">
+					FROZEN_AMOUNT=#{frozenAmount},
+				</if>
+				<if test="transferAmount!=null">
+					TRANSFER_AMOUNT=#{transferAmount},
+				</if>
+				<if test="timeLastUpdated!=null">
+					TIMELASTUPDATED=#{timeLastUpdated},
+				</if>
+			</set>
+			where USERID=#{userId}
+	</update>
+	
+	<select id="byUserFundId"  parameterType="String" resultMap="rm">
+		select USERID userId,AVAILABLE_AMOUNT availableAmount
+		from TB_USER_FUND where USERID = #{userId}
+	</select>
+	
+</mapper>

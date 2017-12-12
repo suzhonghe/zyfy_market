@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.zhongyang.java.dao.ProjectDao'>
+	<resultMap type="com.zhongyang.java.pojo.Project" id="rm">
+		<id column="ID" property="id"/>
+		<result column="AMOUNT" property="amount"/>
+		<result column="AUTOABLE" property="autoable"/>
+		<result column="CLIENTPRIV" property="clientPriv"/>
+		<result column="DESCRIPTION" property="description"/>
+		<result column="EMPLOYEEID" property="employeeId"/>
+		<result column="GUARANTEEINFO" property="guaranteeInfo"/>
+		<result column="GUARANTYSTYLE" property="guarantyStyle"/>
+		<result column="HIDDEN" property="hidden"/>
+		<result column="METHOD" property="method"/>
+		<result column="MORTGAGEINFO" property="mortgageInfo"/>
+		<result column="MORTGAGED" property="mortgaged"/>
+		<result column="PARENTID" property="parentId"/>
+		<result column="PRODUCTID" property="productId"/>
+		<result column="PUREREQUEST" property="pureRequest"/>
+		<result column="PURPOSE" property="purPose"/>
+		<result column="RATE" property="rate"/>
+		<result column="REVIEWCOMMENT" property="reviewComment"/>
+		<result column="RISKINFO" property="riskInfo"/>
+		<result column="SERIAL" property="serial"/>
+		<result column="SOURCE" property="source"/>
+		<result column="STATUS" property="status"/>
+		<result column="TIMESUBMIT" property="timeSubmit"/>
+		<result column="TITLE" property="title"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="DAYS" property="days"/>
+		<result column="MONTHS" property="months"/>
+		<result column="YEARS" property="years"/>
+		<result column="GUARANTEE_ID" property="guaranteeId"/>
+		<result column="GUARANTEE_REALM" property="guaranteeRealm"/>
+		<result column="MAXAMOUNT" property="maxAmount"/>
+		<result column="MAXTIMES" property="maxTimes"/>
+		<result column="MAXTOTALAMOUNT" property="maxTotaLamount"/>
+		<result column="MINAMOUNT" property="minAmount"/>
+		<result column="STEPAMOUNT" property="stepAmount"/>
+		<result column="DAYOFREPAYMENT" property="dayofRepayment"/>
+		<result column="DAYSOFYEAR" property="daysofYear"/>
+		<result column="REPAYMENTPERIOD" property="repaymentPeriod"/>
+		<result column="REALM" property="realm"/>
+		<result column="INVESTINTERESTFEE" property="investInterestFee"/>
+		<result column="LOANGUARANTEEFEE" property="loanGuaranteeFee"/>
+		<result column="LOANINTERESTFEE" property="loanInterestFee"/>
+		<result column="LOANMANAGEFEE" property="loanManageFee"/>
+		<result column="LOANRISKFEE" property="loanRiskFee"/>
+		<result column="LOANSERVICEFEE" property="loanServiceFee"/>
+		<result column="SURPLUSAMOUNT" property="surplusAmount"/>
+		<result column="DELIVERYAMOUNT" property="deliveryAmount"/>
+		<result column="PUBLISEDAMOUNT" property="publishedAmount"/>
+		<result column="OPERATIONRANGE" property="operationRange"/>
+		<result column="REPAYSOURCE" property="repaySource"/>
+		<result column="FIRMINFO" property="firmInfo"/>
+		<result column="MORTGAGEDTYPE" property="mortgagedType"/>
+		<result column="LOANUSERID" property="loanUserId"/>		
+	</resultMap>
+	
+	<sql id="sqlfield">
+		select ID id,AMOUNT amount,AUTOABLE autoable,CLIENTPRIV clientPriv,DESCRIPTION description,EMPLOYEEID employeeId,GUARANTEEINFO guaranteeInfo,GUARANTYSTYLE guarantyStyle,
+			HIDDEN hidden,METHOD method,MORTGAGEINFO mortgageInfo,MORTGAGED mortgaged,PARENTID parentId,PRODUCTID productId,PUREREQUEST pureRequest,PURPOSE purPose,RATE rate,
+			REVIEWCOMMENT reviewComment,RISKINFO riskInfo,SERIAL serial,SOURCE source,STATUS status,TIMESUBMIT timeSubmit,TITLE title,USER_ID userId,DAYS days,MONTHS months,
+			YEARS years,GUARANTEE_ID guaranteeId,GUARANTEE_REALM guaranteeRealm,MAXAMOUNT maxAmount,MAXTIMES maxTimes,MAXTOTALAMOUNT maxTotaLamount,MINAMOUNT minAmount,STEPAMOUNT stepAmount,
+			DAYOFREPAYMENT dayofRepayment,DAYSOFYEAR daysofYear,REPAYMENTPERIOD repaymentPeriod,REALM realm,INVESTINTERESTFEE investInterestFee,LOANGUARANTEEFEE loanGuaranteeFee,
+			LOANINTERESTFEE loanInterestFee,LOANMANAGEFEE loanManageFee,LOANRISKFEE loanRiskFee,LOANSERVICEFEE loanServiceFee,SURPLUSAMOUNT surplusAmount,DELIVERYAMOUNT deliveryAmount,
+			PUBLISEDAMOUNT publishedAmount,OPERATIONRANGE operationRange,REPAYSOURCE repaySource,FIRMINFO firmInfo,MORTGAGEDTYPE mortgagedType,LOANUSERID loanUserId
+		from TB_LOANREQUEST where 1=1
+	</sql>
+	<select id="selectProjectById" parameterType="com.zhongyang.java.pojo.Project" resultMap="rm">
+		<include refid="sqlfield"/>
+			<if test="id!=null">and ID=#{id}</if>	
+	</select>
+</mapper>

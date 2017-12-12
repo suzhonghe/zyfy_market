@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+
+<mapper namespace='com.zhongyang.java.dao.UmpAccountDao'>
+	<resultMap type="com.zhongyang.java.pojo.UmpAccount" id="rm">
+		<id column="ACCOUNTID" property="accountId"/>
+		<id column="ACCOUNTNAME" property="accountName"/>
+		<id column="ClientCode" property="clientCode"/>
+		<id column="REGDATE" property="regDate"/>
+		<id column="TIMECREATE" property="timeCreate"/>
+		<id column="USERID" property="userId"/>
+	</resultMap>
+	<sql id="sqlfield">
+		select ACCOUNTID accountId,
+			   ACCOUNTNAME accountName,
+			   ClientCode accountName,
+			   REGDATE regDate,
+			   TIMECREATE timeCreate,
+			   USERID userId
+		from TB_UMP_ACCOUNT where 1=1
+	</sql>
+	<select id="selectInfoByUmpAccount"  parameterType="com.zhongyang.java.pojo.UmpAccount" resultMap="rm">
+		<include refid="sqlfield"/>
+			<if test="userId !=null"> 
+				and USERID = #{userId}
+			</if>
+	</select>
+	<select id="byUserIdUmpAccount"  parameterType="com.zhongyang.java.pojo.UmpAccount" resultType="com.zhongyang.java.pojo.UmpAccount">
+		select * from TB_UMP_ACCOUNT where <if test="userId !=null"> USERID = #{userId}</if>
+	</select>
+	
+	<insert id="addUmpAccount" parameterType="com.zhongyang.java.pojo.UmpAccount">
+		insert into
+		TB_UMP_ACCOUNT(ACCOUNTNAME,ACCOUNTID,ClientCode,REGDATE,TIMECREATE,USERID)
+		values
+		(#{accountName},#{accountId},#{clientCode},#{regDate},#{timeCreate},#{userId})
+	</insert>
+</mapper>
